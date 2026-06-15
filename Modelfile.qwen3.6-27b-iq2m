@@ -1,11 +1,10 @@
-FROM hf.co/unsloth/Qwen3.6-35B-A3B-GGUF:UD-IQ2_M
+FROM hf.co/unsloth/Qwen3.6-27B-GGUF:UD-IQ2_M
 
-# Context limit optimized for MoE activation + 4-bit KV Cache overhead
-PARAMETER num_ctx 16384
+# Deep dense parameters with an expanded context footprint allowed by lower VRAM weight
+PARAMETER num_ctx 32768
 PARAMETER temperature 0.6
 PARAMETER top_p 0.95
 
-# Explicit Qwen3.6 template mapping to cleanly isolate the native thinking phase
 TEMPLATE """{{ if .System }}<|im_start|>system
 {{ .System }}<|im_end|>{{ end }}{{ if .Prompt }}<|im_start|>user
 {{ .Prompt }}<|im_end|>{{ end }}<|im_start|>assistant
