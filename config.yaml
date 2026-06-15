@@ -1,0 +1,50 @@
+name: Local Config
+version: 1.0.0
+schema: v1
+models:
+  # 1. Mixture-of-Experts Profile
+  - name: Qwen 3.6 35B (IQ2_M)
+    provider: ollama
+    model: qwen3.6-35b-iq2m
+    apiBase: ${{ secrets.OLLAMA_HOST }}
+    roles:
+      - chat
+      - edit
+      - apply
+    capabilities:
+      - tool_use
+    contextLength: 16384
+
+  # 2. Dense Profile: High Accuracy
+  - name: Qwen 3.6 27B (IQ3_XXS)
+    provider: ollama
+    model: qwen3.6-27b-iq3xxs
+    apiBase: ${{ secrets.OLLAMA_HOST }}
+    roles:
+      - chat
+      - edit
+      - apply
+    capabilities:
+      - tool_use
+    contextLength: 24576
+
+  # 3. Dense Profile: Maximum Context/Speed
+  - name: Qwen 3.6 27B (IQ2_M)
+    provider: ollama
+    model: qwen3.6-27b-iq2m
+    apiBase: ${{ secrets.OLLAMA_HOST }}
+    roles:
+      - chat
+      - edit
+      - apply
+    capabilities:
+      - tool_use
+    contextLength: 32768
+
+  # 4. Instant Autocomplete suggestion layer
+  - name: Qwen 2.5 Coder 1.5B
+    provider: ollama
+    model: qwen2.5-coder:1.5b
+    apiBase: ${{ secrets.OLLAMA_HOST }}
+    roles:
+      - autocomplete
