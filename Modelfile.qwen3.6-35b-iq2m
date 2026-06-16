@@ -1,13 +1,18 @@
 FROM hf.co/unsloth/Qwen3.6-35B-A3B-GGUF:UD-IQ2_M
 
-# Context limit optimized for MoE activation + 4-bit KV Cache overhead
-PARAMETER num_ctx 16384
+PARAMETER num_gpu 99
+PARAMETER num_ctx 32768
+PARAMETER kv_overrides "[{\"key\":\"blk.0.attn_k.type\",\"val\":2},{\"key\":\"blk.0.attn_v.type\",\"val\":2}]"
 PARAMETER temperature 0.6
 PARAMETER top_p 0.95
+PARAMETER top_k 20
 
-# Explicit Qwen3.6 template mapping to cleanly isolate the native thinking phase
 TEMPLATE """{{ if .System }}<|im_start|>system
-{{ .System }}<|im_end|>{{ end }}{{ if .Prompt }}<|im_start|>user
-{{ .Prompt }}<|im_end|>{{ end }}<|im_start|>assistant
-<think>
-"""
+{{ .System }}<|im_end|>}
+{{ end }}{{ if .Prompt }}<|im_start|>user
+{{ .Prompt }}<|im_end|>}
+{{ end }}<|im_start|>assistant
+{{ .Response }}<|im_end|}"""
+
+PARAMETER stop "<|im_start|>"
+PARAMETER stop "<|im_end|>"
